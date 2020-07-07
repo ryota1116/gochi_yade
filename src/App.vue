@@ -1,17 +1,25 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1>ゴチになります</h1>
+    <span>今回の設定金額: ¥25,000</span>
+    <p>メニュー一覧</p>
+    <CuisineMenu :order-cuisine='orderCuisine'></CuisineMenu>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import CuisineMenu from './components/CuisineMenu.vue'
 
 export default {
   name: 'App',
+  data() {
+    return {
+      orderCuisine: [],
+      menu: []
+    }
+  },
   components: {
-    HelloWorld
+    CuisineMenu: CuisineMenu
   }
 }
 </script>
