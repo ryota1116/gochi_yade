@@ -1,13 +1,13 @@
 <template>
   <div>
-    <div v-for="(menu, index) in menus" :key="index">
+    <div v-for="(cuisine, index) in cuisines" :key="index">
       <input
         type="checkbox"
+        :id="'cuisine' + index"
+        :value="cuisine.fields.name.stringValue"
         v-model="orderedCuisine"
-        :id="'menu' + index"
-        :value="menu"
       >
-      <label :for="'menu' + index">{{ menu }}</label>
+      <label :for="'cuisine' + index">{{ cuisine.fields.name.stringValue }}</label>
     </div>
     <span>注文する料理: {{ orderedCuisine }}</span>
   </div>
@@ -17,23 +17,16 @@
 export default {
   // 型指定とrequire true
   props: {
-    orderedCuisine: {
-      type: Array,
-      default: () => []
+    cuisines: {
+      // TODO: 受け取ってるのはオブジェクトやし、Arrayじゃなくておk？
+      type: Object
     }
   },
-  // name: 'CuisineMenu',
   data: ()=> {
     return {
-      menus: ['3色野菜のムーステリーヌ', '鴨肉のロティ', 'ラムチョップのソテー ~バルサミコと赤ワインのソース~', '神戸牛のフィレステーキ']
-      // orderedCuisine: []
+      orderedCuisine: []
     }
   }
-  // methods: {
-  //   order() {
-  //     this.$emit('select-menu', this.orderedCuisine)
-  //   }
-  // }
 }
 </script>
 

@@ -3,20 +3,35 @@
     <h1>ゴチになります</h1>
     <span>今回の設定金額: ¥25,000</span>
     <p>メニュー一覧</p>
-    <CuisineMenu :order-cuisine='orderCuisine'></CuisineMenu>
+    <!-- <div v-for="cuisine in cuisines" :key="cuisine.name">
+      <div>{{ cuisine.fields.name.stringValue }}</div>
+    </div> -->
+    <!-- :cuisines='cuisines'はどっちがどっち？ -->
+    <CuisineMenu :cuisines='cuisines'></CuisineMenu>
   </div>
 </template>
 
 <script>
 import CuisineMenu from './components/CuisineMenu.vue'
+import axios from "axios";
+// import firebase from 'firebase'
 
 export default {
   name: 'App',
-  data() {
+  // コンポーネントにdataを渡すときは、関数にしてreturnする必要がある
+  data: function() {
     return {
-      orderCuisine: [],
-      menu: []
+      cuisines: {
+        type: Array
+      }
     }
+  },
+  created() {
+    axios.get('https://firestore.googleapis.com/v1/projects/gochi-yade/databases/(default)/documents/cuisine')
+    .then(response => {
+      this.cuisines = response.data.documents;
+      // console.log(response.data.documents);
+    });
   },
   components: {
     CuisineMenu: CuisineMenu
