@@ -14,7 +14,6 @@
 <script>
 import CuisineMenu from './components/CuisineMenu.vue'
 import axios from "axios";
-// import firebase from 'firebase'
 
 export default {
   name: 'App',
@@ -30,7 +29,7 @@ export default {
     axios.get('https://firestore.googleapis.com/v1/projects/gochi-yade/databases/(default)/documents/cuisine')
     .then(response => {
       this.cuisines = response.data.documents;
-      // console.log(response.data.documents);
+      console.log(response.data.documents);
     });
   },
   components: {

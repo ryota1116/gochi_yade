@@ -1,15 +1,24 @@
 <template>
   <div>
     <div v-for="(cuisine, index) in cuisines" :key="index">
+      <!-- :value="cuisine.fields.name.stringValue"とすれば、orderCuisineで料理名だけ表示できるけど。。 -->
+      <!-- :value="[cuisine.fields.name.stringValue, cuisine.fields.price.integerValue]" -->
+      <!-- onclickでfunctionでdataを分けて使うとか -->
       <input
         type="checkbox"
         :id="'cuisine' + index"
-        :value="cuisine.fields.name.stringValue"
+        :value="{name: cuisine.fields.name.stringValue, price: cuisine.fields.price.integerValue}"
         v-model="orderedCuisine"
       >
       <label :for="'cuisine' + index">{{ cuisine.fields.name.stringValue }}</label>
     </div>
-    <span>注文する料理: {{ orderedCuisine }}</span>
+    <p>注文する料理</p>
+    <!-- eachとかで回す -->
+    <ul v-for="(cuisine, index) in orderedCuisine" :key="index">
+      <li>{{ cuisine.name }}</li>
+    </ul>
+    <br>
+    <button>STOP</button>
   </div>
 </template>
 
@@ -19,14 +28,21 @@ export default {
   props: {
     cuisines: {
       // TODO: 受け取ってるのはオブジェクトやし、Arrayじゃなくておk？
-      type: Object
+      type: Object,
+
     }
   },
   data: ()=> {
     return {
-      orderedCuisine: []
+      orderedCuisine: [
+        // 下記はコメントアウトで良さそう
+        // {
+        //   name: '',
+        //   price: ''
+        // }
+      ]
     }
-  }
+  },
 }
 </script>
 
