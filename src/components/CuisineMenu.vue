@@ -1,8 +1,6 @@
 <template>
   <div>
     <div v-for="(cuisine, key) in cuisines" :key="key">
-      <!-- :value="cuisine.fields.name.stringValue"とすれば、orderCuisineで料理名だけ表示できるけど。。 -->
-      <!-- :value="[cuisine.fields.name.stringValue, cuisine.fields.price.integerValue]" -->
       <!-- onclickでfunctionでdataを分けて使うとか -->
       <input
         type="checkbox"
@@ -18,7 +16,14 @@
       <li>{{ key + 1 }}皿目: {{ cuisine.name }}</li>
     </ul>
     <br>
-    <button>STOP</button>
+    <button @click="active">STOP</button>
+    <br>
+    <div v-if="isActive">
+      <h4>
+        注文金額:{{ totalAmountMoneyOfOrder }}円<br>
+        ( {{ totalMoneyDeference }}円 )
+      </h4>
+    </div>
   </div>
 </template>
 
@@ -27,7 +32,7 @@ export default {
   // 型指定とrequire true
   props: {
     cuisines: {
-      // TODO: 受け取ってるのはオブジェクトやし、Arrayじゃなくておk？
+      // TODO: Arrayにしてもエラー出る
       type: Object,
 
     }
@@ -40,9 +45,27 @@ export default {
         //   name: '',
         //   price: ''
         // }
-      ]
+      ],
+      isActive: false
     }
   },
+  methods:{
+    active: function() {
+      this.isActive = !this.isActive
+    }
+  },
+  computed: {
+    totalAmountMoneyOfOrder: function() {
+      const total = this.orderedCuisine.reduce((i, next) => i += Number(next.price), 0);
+      return total;
+    },
+    totalMoneyDeference: function() {
+      const total = this.orderedCuisine.reduce((i, next) => i += Number(next.price), 0);
+      const deference = total - 5000;
+      // const deference = Math.sign(total - 5000);
+      return deference;
+    }
+  }
 }
 </script>
 
