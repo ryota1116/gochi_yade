@@ -1,5 +1,19 @@
 <template>
   <div>
+    <h1>ゴチになります</h1>
+    <select v-model="selectedPrice">
+      <option v-for="(option, key) in options" :value="option" :key="key">
+        {{ option }}
+      </option>
+    </select>
+    <br>
+    <span>今回の設定金額: {{ selectedPrice }}</span>
+
+    
+    <!-- <input v-model="setPrice"><br>
+    <span>今回の設定金額: {{ setPrice }}</span> -->
+
+    <p>メニュー一覧</p>
     <div v-for="(cuisine, key) in cuisines" :key="key">
       <!-- onclickでfunctionでdataを分けて使うとか -->
       <input
@@ -10,11 +24,13 @@
       >
       <label :for="'cuisine' + key">{{ cuisine.fields.name.stringValue }}</label>
     </div>
+
     <p>注文する料理</p>
     <!-- eachで回す -->
     <ul v-for="(cuisine, key) in orderedCuisine" :key="key">
       <li>{{ key + 1 }}皿目: {{ cuisine.name }}</li>
     </ul>
+    <!-- 注文結果 -->
     <br>
     <button @click="active">STOP</button>
     <br>
@@ -46,7 +62,9 @@ export default {
         //   price: ''
         // }
       ],
-      isActive: false
+      isActive: false,
+      selectedPrice: "",
+      options: [5000, 10000, 25000]
     }
   },
   methods:{
@@ -61,7 +79,7 @@ export default {
     },
     totalMoneyDeference: function() {
       const total = this.orderedCuisine.reduce((i, next) => i += Number(next.price), 0);
-      const deference = total - 5000;
+      const deference = total - this.selectedPrice;
       // const deference = Math.sign(total - 5000);
       return deference;
     }

@@ -1,8 +1,5 @@
 <template>
   <div id="app">
-    <h1>ゴチになります</h1>
-    <span>今回の設定金額: ¥25,000</span>
-    <p>メニュー一覧</p>
     <!-- <div v-for="cuisine in cuisines" :key="cuisine.name">
       <div>{{ cuisine.fields.name.stringValue }}</div>
     </div> -->
