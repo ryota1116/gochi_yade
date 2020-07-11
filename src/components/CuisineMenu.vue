@@ -1,17 +1,11 @@
 <template>
   <div>
     <h1>ゴチになります</h1>
-    <select v-model="selectedPrice">
-      <option v-for="(option, key) in options" :value="option" :key="key">
-        {{ option }}
-      </option>
-    </select>
+    <v-select v-model="selectedPrice" :items="options" :label="設定金額" ></v-select>
     <br>
     <span>今回の設定金額: {{ selectedPrice }}</span>
-
-    
-    <!-- <input v-model="setPrice"><br>
-    <span>今回の設定金額: {{ setPrice }}</span> -->
+    <!-- 画像表示 -->
+    <!-- <img src="" /> -->
 
     <p>メニュー一覧</p>
     <div v-for="(cuisine, key) in cuisines" :key="key">
@@ -19,10 +13,10 @@
       <input
         type="checkbox"
         :id="'cuisine' + key"
-        :value="{name: cuisine.fields.name.stringValue, price: cuisine.fields.price.integerValue}"
+        :value="{name: cuisine.name, price: cuisine.price}"
         v-model="orderedCuisine"
       >
-      <label :for="'cuisine' + key">{{ cuisine.fields.name.stringValue }}</label>
+      <label :for="'cuisine' + key">{{ cuisine.name }}</label>
     </div>
 
     <p>注文する料理</p>
