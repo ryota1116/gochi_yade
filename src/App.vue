@@ -3,27 +3,24 @@
     <v-container>
       <v-layout wrap>
         <v-flex xs12 sm6 md4>
-          <!-- <router-link to="/">Go to home</router-link> -->
           <!-- xsが600px未満/ smが600px以上960px未満/ mdが960px以上1264px未満/ lgが1264px以上1904px未満/ xlが1904px以上 -->
-          <!-- 子コンポーネントに料理名は渡している -->
-          <component></component>
-          <router-view :cuisines1='cuisines'></router-view>
+          <Home cuisines="cuisines"></Home>
         </v-flex>
       </v-layout>
     </v-container>
   </v-app>
-  <!-- <div id="app"> -->
-  <!-- </div> -->
 </template>
 
 <script>
-// import CuisineMenu from './components/CuisineMenu.vue';
-
+import Home from './components/Home.vue';
 import { firestore } from './plugins/firestore';
 // import axios from "axios";
 
 export default {
   name: 'App',
+  components: {
+    Home: Home
+  },
   // コンポーネントにdataを渡すときは、関数にしてreturnする必要がある
   data: function() {
     return {
@@ -40,15 +37,6 @@ export default {
         console.log(doc.data())
       });
     });
-
-    // axios.get('https://firestore.googleapis.com/v1/projects/gochi-yade/databases/(default)/documents/cuisine')
-    // .then(response => {
-    //   this.cuisines = response.data.documents;
-    //   console.log(response.data.documents);
-    // });
-  },
-  components: {
-    // CuisineMenu: CuisineMenu
   }
 };
 </script>

@@ -3,8 +3,9 @@
     <v-container>
       <v-row justify="center">
         <v-col cols="12">
-          <h4>フレンチ</h4>
-          <div v-for="(cuisine, key) in cuisines1" :key="key">
+          <h4>イタリアン</h4>
+          <!-- {{ frenchCuisines }}
+          <div v-for="(cuisine, key) in frenchCuisines" :key="key">
             <input
               type="checkbox"
               :id="'cuisine' + key"
@@ -12,7 +13,7 @@
               v-model="orderedCuisine"
             >
             <label :for="'cuisine' + key">{{ cuisine.name }}</label>
-          </div>
+          </div> -->
         </v-col>
       </v-row>
     </v-container>
@@ -22,10 +23,7 @@
 <script>
 export default {
   props: {
-    cuisines1: {
-      type: Object,
-      require: true
-    }
+    frenchCuisines: []
   },
   data: ()=> {
     return {

@@ -4,25 +4,13 @@
       <v-row justify="center">
         <v-col cols="12">
           <h1>ゴチになります</h1>
-          <v-select v-model="selectedPrice" :items="options" :label="設定金額"></v-select>
+          <v-select v-model="selectedPrice" :items="options" label="設定金額"></v-select>
           <h3>今回の設定金額: {{ selectedPrice }}円</h3>
-
+          <br>
           <h4>メニュー一覧</h4>
-          <router-link to="/french">French</router-link>
           <!-- v-ifで表示するコンポーネントを切り替える -->
-          <v-select v-model="cuisineGenre" :items="genres" :label="ジャンル"></v-select>
-          <div v-if="cuisineGenre === 'French'">
-            <FrenchCuisine ></FrenchCuisine>
-          </div>
-          <div v-else-if="cuisineGenre === 'Japan'">
-            い
-            <!-- <router-view :cuisines1='cuisines'></router-view> -->
-          </div>
-          <div v-else-if="cuisineGenre === 'Italy'">
-            う
-            <!-- <router-view :cuisines1='cuisines'></router-view> -->
-          </div>
-
+          <v-select v-model="currentTab" :items="genres" label="メニュー"></v-select>
+          <component :is="selectedTabComponent"></component>
 
           <p>注文する料理</p>
           <ul v-for="(cuisine, key) in orderedCuisine" :key="key">
@@ -45,14 +33,18 @@
 </template>
 
 <script>
+import FrenchCuisine from './FrenchCuisine';
+import JapaneseCuisine from './JapaneseCuisine';
+import ItalianCuisine from './ItalianCuisine';
+
 export default {
-  // 型指定とrequire true
   props: {
-    cuisines1: {
-      // TODO: Arrayにしてもエラー出る
-      type: Object,
-      require: true
-    },
+    cuisines: [],
+  },
+  components: {
+    FrenchCuisine,
+    JapaneseCuisine,
+    ItalianCuisine
   },
   data: ()=> {
     return {
@@ -67,7 +59,9 @@ export default {
       selectedPrice: "",
       options: [5000, 10000, 25000],
       cuisineGenre: "",
-      genres: ['French', 'Japan', 'Italy']
+
+      genres: ['French', 'Japanese', 'Italian'],
+      currentTab: "",
     }
   },
   methods:{
@@ -76,6 +70,10 @@ export default {
     }
   },
   computed: {
+    selectedTabComponent: function() {
+      return this.currentTab + "Cuisine";
+      // .toLowerCase()
+    },
     totalAmountMoneyOfOrder: function() {
       const total = this.orderedCuisine.reduce((i, next) => i += Number(next.price), 0);
       return total;
