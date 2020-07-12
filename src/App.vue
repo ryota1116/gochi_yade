@@ -1,8 +1,15 @@
 <template>
   <v-app>
     <v-container>
-      <!-- :cuisines='cuisines'はどっちがどっち？ -->
-      <CuisineMenu :cuisines='cuisines'></CuisineMenu>
+      <v-layout wrap>
+        <v-flex xs12 sm6 md4>
+          <!-- <router-link to="/">Go to home</router-link> -->
+          <!-- xsが600px未満/ smが600px以上960px未満/ mdが960px以上1264px未満/ lgが1264px以上1904px未満/ xlが1904px以上 -->
+          <!-- 子コンポーネントに料理名は渡している -->
+          <component></component>
+          <router-view :cuisines1='cuisines'></router-view>
+        </v-flex>
+      </v-layout>
     </v-container>
   </v-app>
   <!-- <div id="app"> -->
@@ -10,11 +17,10 @@
 </template>
 
 <script>
-import CuisineMenu from './components/CuisineMenu.vue';
-// import axios from "axios";
-import { firestore } from './plugins/firestore';
-// import "firebase/firestore";
+// import CuisineMenu from './components/CuisineMenu.vue';
 
+import { firestore } from './plugins/firestore';
+// import axios from "axios";
 
 export default {
   name: 'App',
@@ -27,7 +33,7 @@ export default {
     }
   },
   created() {
-    firestore.collection("cuisine").doc('French').collection('duck_roti').get().then(querySnapshot => {
+    firestore.collection("cuisine").get().then(querySnapshot => {
       querySnapshot.forEach(doc => {
         // doc.data() is never undefined for query doc snapshots
         this.cuisines.push(doc.data());
@@ -35,14 +41,6 @@ export default {
       });
     });
 
-    // console.log(this.cuisines);
-
-    // this.cuisines = firestore.collection("cuisine").get().then(function(querySnapshot) {
-    //   querySnapshot.forEach(function(doc) {
-    //     // doc.data() is never undefined for query doc snapshots
-    //     console.log(doc.id, " => ", doc.data());
-    //   });
-    // });
     // axios.get('https://firestore.googleapis.com/v1/projects/gochi-yade/databases/(default)/documents/cuisine')
     // .then(response => {
     //   this.cuisines = response.data.documents;
@@ -50,8 +48,7 @@ export default {
     // });
   },
   components: {
-    // HelloWorld,
-    CuisineMenu: CuisineMenu
+    // CuisineMenu: CuisineMenu
   }
 };
 </script>
