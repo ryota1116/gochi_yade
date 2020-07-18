@@ -5,7 +5,7 @@
         <v-col cols="12">
           <h1>ゴチになります</h1>
           <v-select v-model="selectedPrice" :items="priceOptions" label="設定金額"></v-select>
-          <h3>今回の設定金額: {{ selectedPrice }}円</h3>
+          <h3>今回の設定金額: {{ selectedPrice | numberFormat }}円</h3>
           <br>
 
           <!-- 料理のジャンル選択 -->
