@@ -18,6 +18,7 @@
               :value="cuisine"
               :label="cuisine.name">
             </v-checkbox>
+            <v-img :src="cuisine.image"></v-img>
           </div>
 
           <!-- <div v-for="(cuisine, index) in frenchCuisines" :key="index">
@@ -94,7 +95,7 @@ export default {
       // .toLowerCase()
     },
     cuisinesOfSelectedGenre: function() {
-      // 現状では、propsで受け取った複数のcollectionの中の1つのcollectionを格納してる
+      // 現状では、propsで受け取った複数のcollectionの中の、1つのcollectionを格納してる
       const cuisinesOfSelectedGenre = [];
       if (this.genre === 'French') {
         for (let i = 0; i < this.french_collection.length; i++) {
@@ -110,7 +111,7 @@ export default {
       return cuisinesOfSelectedGenre;
     },
     totalAmountMoneyOfOrder: function() {
-      // 足し算してる
+      // 金額を足し算してる
       const total = this.listOfOrderedCuisines.reduce((i, next) => i += Number(next.price), 0);
       return total;
     },

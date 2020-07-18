@@ -14,14 +14,15 @@ const firebaseApp = firebase.initializeApp({
   authDomain: "gochi-yade.firebaseapp.com",
   databaseURL: "https://gochi-yade.firebaseio.com",
   projectId: "gochi-yade",
+  // cloud storageを使えるようになる
   storageBucket: "gochi-yade.appspot.com",
   messagingSenderId: "146410533785",
   appId: "1:146410533785:web:94ec468e7fffc5c4b95908",
   measurementId: "G-97V976H53X"
 });
 
-export const firestore = firebaseApp.firestore()
-firestore.settings({ timestampsInSnapshots: true })
+export const db = firebaseApp.firestore();
+db.settings({ timestampsInSnapshots: true })
 
 // export default firestore
 
