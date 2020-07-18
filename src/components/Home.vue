@@ -42,8 +42,9 @@
           </div>
           <div v-if="isActive">
             <h4>
-              注文金額:{{ totalAmountMoneyOfOrder }}円<br>
-              ( {{ totalMoneyDeference }}円 )
+              注文金額:{{ totalAmountMoneyOfOrder | numberFormat }}円<br>
+              <!-- 差額 -->
+              ( {{ totalMoneyDeference | numberFormat }}円 )
             </h4>
           </div>
         </v-col>
@@ -82,6 +83,11 @@ export default {
       genres: ['French', 'Japanese', 'Italian'],
       genre: "",
       listOfOrderedCuisines: []
+    }
+  },
+  filters:{
+    numberFormat:function(value){
+      return value.toLocaleString()
     }
   },
   methods:{
