@@ -1,41 +1,41 @@
 <template>
   <div>
     <v-container>
-      <v-row justify="center">
-        <v-col cols="12">
+      <v-row justify="center" >
+        <v-col cols="8">
           <h1>ゴチになります</h1>
           <v-select v-model="selectedPrice" :items="priceOptions" label="設定金額"></v-select>
           <h3>今回の設定金額: {{ selectedPrice | numberFormat }}円</h3>
           <br>
 
           <!-- 料理のジャンル選択 -->
-          <v-select v-model="genre" :items="genres" label="ジャンル選択"></v-select>
-
-          <!-- 選択したジャンルの料理一覧 -->
-          <div v-for="(cuisine, index) in cuisinesOfSelectedGenre" :key="index">
+          <v-select v-model="genre" :items="genres" label="ジャンル選択" @change="dynamicMenu0fCuisines"></v-select>
+          <!-- 選択したジャンルの料理一覧を動的に表示 -->
+          <keep-alive>
+            <component :is="selectedTabComponent"
+              :french_collection="french_collection"
+              :japanese_collection="japanese_collection"
+              @check-cuisine="aa"
+            ></component>
+          </keep-alive>
+          <!-- <div v-for="(cuisine, index) in cuisine0fSelectedGenre" :key="index">
             <v-checkbox
-              v-model="listOfOrderedCuisines"
+              :label="cuisine.name"
               :value="cuisine"
-              :label="cuisine.name">
+              v-model="listOfOrderedCuisines"
+            >
             </v-checkbox>
             <v-img :src="cuisine.image"></v-img>
-          </div>
-
-          <!-- <div v-for="(cuisine, index) in frenchCuisines" :key="index">
-            <input
-              type="checkbox"
-              :id="'cuisine' + key"
-              :value="{name: cuisine.name, price: cuisine.price}"
-              v-model="orderedCuisine"
-            >
-            <label :for="'cuisine' + key">{{ cuisine.name }}</label>
           </div> -->
 
           <!-- 選択した料理 -->
           <h4>注文する料理</h4>
-          <ul v-for="(cuisine, index) in listOfOrderedCuisines" :key="index">
-            <li>{{ index + 1 }}皿目: {{ cuisine.name }}</li>
+          <ul v-for="(cuisine, index) in listOfOrderedCuisines" :key="cuisine.id">
+            <!-- <li>{{ index + 1 }}皿目: {{ cuisine.name }}</li> -->
+            <!-- cuisine.nameで表示できないのワケわからん -->
+            <li>{{ index + 1 }}皿目: {{ cuisine[index].name }}</li>
           </ul>
+
           <!-- 注文結果 -->
           <div class="my-2">
             <v-btn @click="active" color="warning" dark>STOP</v-btn>
@@ -54,8 +54,8 @@
 </template>
 
 <script>
-// import FrenchCuisine from './FrenchCuisine';
-// import JapaneseCuisine from './JapaneseCuisine';
+import FrenchCuisine from './FrenchCuisine';
+import JapaneseCuisine from './JapaneseCuisine';
 // import ItalianCuisine from './ItalianCuisine';
 
 export default {
@@ -63,17 +63,14 @@ export default {
   props: {
     french_collection: {
       type: Array,
-      default: () => []
+      default: () => [],
+      required: true
     },
     japanese_collection: {
       type: Array,
-      default: () => []
+      default: () => [],
+      required: true
     }
-  },
-  components: {
-    // FrenchCuisine,
-    // JapaneseCuisine,
-    // ItalianCuisine
   },
   data: ()=> {
     return {
@@ -93,29 +90,33 @@ export default {
   methods:{
     active: function() {
       this.isActive = !this.isActive
+    },
+    aa(value) {
+      this.listOfOrderedCuisines.push(value);
     }
+    // dynamicMenu0fCuisines: function() {
+    //   // 現状では、propsで受け取った複数のcollectionの中の、1つのcollectionを格納してる
+    //   let dynamicMenu0fCuisines = [];
+    //   if (this.genre === 'French') {
+    //     // for (let i = 0; i < this.french_collection.length; i++) {
+    //       // let cuisine = this.french_collection[i];
+    //       // dynamicMenu0fCuisines.push(cuisine);
+    //       // dynamicMenu0fCuisines.push(this.french_collection[i]);
+    //     dynamicMenu0fCuisines = this.french_collection;
+    //   } else if (this.genre === 'Japanese') {
+    //     dynamicMenu0fCuisines = this.japanese_collection;
+    //   }
+    //   this.cuisine0fSelectedGenre = dynamicMenu0fCuisines;
+    // }
   },
+  // 動的コンポーネント
+  // computedはdataと違って書き換えるとかいう設定はない。
   computed: {
     selectedTabComponent: function() {
       return this.genre + "Cuisine";
       // .toLowerCase()
     },
-    cuisinesOfSelectedGenre: function() {
-      // 現状では、propsで受け取った複数のcollectionの中の、1つのcollectionを格納してる
-      const cuisinesOfSelectedGenre = [];
-      if (this.genre === 'French') {
-        for (let i = 0; i < this.french_collection.length; i++) {
-          let cuisine = this.french_collection[i];
-          cuisinesOfSelectedGenre.push(cuisine);
-        }
-      } else if (this.genre === 'Japanese') {
-        for (let i = 0; i < this.japanese_collection.length; i++) {
-          let cuisine = this.japanese_collection[i];
-          cuisinesOfSelectedGenre.push(cuisine);
-        }
-      }
-      return cuisinesOfSelectedGenre;
-    },
+    
     totalAmountMoneyOfOrder: function() {
       // 金額を足し算してる
       const total = this.listOfOrderedCuisines.reduce((i, next) => i += Number(next.price), 0);
@@ -128,6 +129,11 @@ export default {
       // const deference = Math.sign(total - 5000);
       return deference;
     }
+  },
+  components: {
+    FrenchCuisine,
+    JapaneseCuisine
+  //   ItalianCuisine
   }
 }
 </script>
