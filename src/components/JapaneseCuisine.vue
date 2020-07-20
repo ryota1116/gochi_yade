@@ -15,7 +15,7 @@
 
 <script>
   export default {
-  // ジャンル毎に取得したデータを複数propsで受け取る？
+  // ジャンル毎に取得したデータを各componentで受け取る？
     props: {
       japanese_collection: {
         type: Array,

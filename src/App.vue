@@ -4,7 +4,6 @@
     <v-container>
       <v-layout wrap>
         <v-flex>
-          <!-- xs12 sm6 md4 -->
           <!--xsが600px未満/ smが600px以上960px未満/ mdが960px以上1264px未満/ lgが1264px以上1904px未満/ xlが1904px以上-->
           <Home :french_collection="french_collection" :japanese_collection="japanese_collection"></Home>
         </v-flex>

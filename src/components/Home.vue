@@ -94,23 +94,22 @@ export default {
     aa(value) {
       this.listOfOrderedCuisines.push(value);
     }
-    // dynamicMenu0fCuisines: function() {
+    // cuisine0fSelectedGenre: function() {
     //   // 現状では、propsで受け取った複数のcollectionの中の、1つのcollectionを格納してる
-    //   let dynamicMenu0fCuisines = [];
+    //   let cuisine0fSelectedGenre = [];
     //   if (this.genre === 'French') {
     //     // for (let i = 0; i < this.french_collection.length; i++) {
     //       // let cuisine = this.french_collection[i];
-    //       // dynamicMenu0fCuisines.push(cuisine);
-    //       // dynamicMenu0fCuisines.push(this.french_collection[i]);
-    //     dynamicMenu0fCuisines = this.french_collection;
+    //       // cuisine0fSelectedGenre.push(cuisine);
+    //       // cuisine0fSelectedGenre.push(this.french_collection[i]);
+    //     cuisine0fSelectedGenre = this.french_collection;
     //   } else if (this.genre === 'Japanese') {
-    //     dynamicMenu0fCuisines = this.japanese_collection;
+    //     cuisine0fSelectedGenre = this.japanese_collection;
     //   }
-    //   this.cuisine0fSelectedGenre = dynamicMenu0fCuisines;
+    //   return cuisine0fSelectedGenre;
     // }
   },
   // 動的コンポーネント
-  // computedはdataと違って書き換えるとかいう設定はない。
   computed: {
     selectedTabComponent: function() {
       return this.genre + "Cuisine";
