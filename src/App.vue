@@ -5,7 +5,7 @@
       <v-layout wrap>
         <v-flex>
           <!--xsが600px未満/ smが600px以上960px未満/ mdが960px以上1264px未満/ lgが1264px以上1904px未満/ xlが1904px以上-->
-          <Home :french_collection="french_collection" :japanese_collection="japanese_collection"></Home>
+          <Home :cuisines="cuisines"></Home>
         </v-flex>
       </v-layout>
     </v-container>
@@ -27,26 +27,25 @@ export default {
   // コンポーネントにdataを渡すときは、関数にしてreturnする必要がある
   data: function() {
     return {
-      french_collection: [],
-      japanese_collection: [],
+      cuisines: [],
       cuisineImages: []
     }
   },
   created() {
-    db.collection("french").get().then(querySnapshot => {
+    db.collection("cuisine").get().then(querySnapshot => {
       querySnapshot.forEach(doc => {
-        // doc.data() is never undefined for query doc snapshots
-        this.french_collection.push(doc.data());
+        this.cuisines.push(doc.data());
         console.log(doc.data())
       });
     });
-    db.collection("japanese").get().then(querySnapshot => {
-      querySnapshot.forEach(doc => {
-        // doc.data() is never undefined for query doc snapshots
-        this.japanese_collection.push(doc.data());
-        console.log(doc.data())
-      });
-    });
+    // db.collection("japanese").get().then(querySnapshot => {
+    //   querySnapshot.forEach(doc => {
+    //     // doc.data() is never undefined for query doc snapshots
+    //     this.japanese_collection.push(doc.data());
+    //     console.log(doc.data())
+    //   });
+    // });
+
     // 参照を作成するために使用される「ストレージサービス」への参照を取得する
     // const storage = firebase.storage();
     // ストレージ参照を作成する。この参照を使って、ファイルをいじったりする
