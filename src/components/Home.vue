@@ -1,41 +1,32 @@
 <template>
   <div>
     <v-container>
-      <v-row justify="center">
-        <v-col cols="12">
+      <v-row justify="center" >
+        <v-col cols="8">
           <h1>ゴチになります</h1>
           <v-select v-model="selectedPrice" :items="priceOptions" label="設定金額"></v-select>
           <h3>今回の設定金額: {{ selectedPrice | numberFormat }}円</h3>
           <br>
 
           <!-- 料理のジャンル選択 -->
-          <v-select v-model="genre" :items="genres" label="ジャンル選択"></v-select>
-
-          <!-- 選択したジャンルの料理一覧 -->
-          <div v-for="(cuisine, index) in cuisinesOfSelectedGenre" :key="index">
+          <v-select v-model="selectedGenre" :items="genres" label="ジャンル選択"></v-select>
+          <!-- 選択したジャンルの料理一覧を動的に表示 -->
+          <div v-for="(cuisine, index) in cuisine0fSelectedGenre" :key="cuisine.genre-index">
             <v-checkbox
-              v-model="listOfOrderedCuisines"
+              :label="cuisine.name"
               :value="cuisine"
-              :label="cuisine.name">
+              v-model="listOfOrderedCuisines"
+            >
             </v-checkbox>
             <v-img :src="cuisine.image"></v-img>
           </div>
 
-          <!-- <div v-for="(cuisine, index) in frenchCuisines" :key="index">
-            <input
-              type="checkbox"
-              :id="'cuisine' + key"
-              :value="{name: cuisine.name, price: cuisine.price}"
-              v-model="orderedCuisine"
-            >
-            <label :for="'cuisine' + key">{{ cuisine.name }}</label>
-          </div> -->
-
           <!-- 選択した料理 -->
           <h4>注文する料理</h4>
-          <ul v-for="(cuisine, index) in listOfOrderedCuisines" :key="index">
+          <ul v-for="(cuisine, index) in listOfOrderedCuisines" :key="cuisine.id">
             <li>{{ index + 1 }}皿目: {{ cuisine.name }}</li>
           </ul>
+
           <!-- 注文結果 -->
           <div class="my-2">
             <v-btn @click="active" color="warning" dark>STOP</v-btn>
@@ -54,26 +45,14 @@
 </template>
 
 <script>
-// import FrenchCuisine from './FrenchCuisine';
-// import JapaneseCuisine from './JapaneseCuisine';
-// import ItalianCuisine from './ItalianCuisine';
-
 export default {
   // ジャンル毎に取得したデータを複数propsで受け取る？
   props: {
-    french_collection: {
+    cuisines: {
       type: Array,
-      default: () => []
-    },
-    japanese_collection: {
-      type: Array,
-      default: () => []
+      default: () => [],
+      required: true
     }
-  },
-  components: {
-    // FrenchCuisine,
-    // JapaneseCuisine,
-    // ItalianCuisine
   },
   data: ()=> {
     return {
@@ -82,7 +61,8 @@ export default {
       selectedPrice: "",
       genres: ['French', 'Japanese', 'Italian'],
       genre: "",
-      listOfOrderedCuisines: []
+      listOfOrderedCuisines: [],
+      selectedGenre: null
     }
   },
   filters:{
@@ -96,25 +76,22 @@ export default {
     }
   },
   computed: {
-    selectedTabComponent: function() {
-      return this.genre + "Cuisine";
-      // .toLowerCase()
-    },
-    cuisinesOfSelectedGenre: function() {
+    cuisine0fSelectedGenre: function() {
+      return this.cuisines.filter(cuisine => {
+        return cuisine.genre == this.selectedGenre
+      })
       // 現状では、propsで受け取った複数のcollectionの中の、1つのcollectionを格納してる
-      const cuisinesOfSelectedGenre = [];
-      if (this.genre === 'French') {
-        for (let i = 0; i < this.french_collection.length; i++) {
-          let cuisine = this.french_collection[i];
-          cuisinesOfSelectedGenre.push(cuisine);
-        }
-      } else if (this.genre === 'Japanese') {
-        for (let i = 0; i < this.japanese_collection.length; i++) {
-          let cuisine = this.japanese_collection[i];
-          cuisinesOfSelectedGenre.push(cuisine);
-        }
-      }
-      return cuisinesOfSelectedGenre;
+      // let cuisine0fSelectedGenre = [];
+      // if (this.genre === 'French') {
+      //   // for (let i = 0; i < this.french_collection.length; i++) {
+      //     // let cuisine = this.french_collection[i];
+      //     // cuisine0fSelectedGenre.push(cuisine);
+      //     // cuisine0fSelectedGenre.push(this.french_collection[i]);
+      //   cuisine0fSelectedGenre = this.french_collection;
+      // } else if (this.genre === 'Japanese') {
+      //   cuisine0fSelectedGenre = this.japanese_collection;
+      // }
+      // return cuisine0fSelectedGenre;
     },
     totalAmountMoneyOfOrder: function() {
       // 金額を足し算してる
