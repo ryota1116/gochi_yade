@@ -1,35 +1,95 @@
 <template>
   <div>
     <v-container>
-      <v-row justify="center" >
-        <v-col cols="8">
+      <v-row justify="center">
+        <v-col cols=12 sm=8 md=8 lg=8 xl=8>
+          <!-- 以下が実装 -->
           <h1>ゴチになります</h1>
-          <v-select v-model="selectedPrice" :items="priceOptions" label="設定金額"></v-select>
-          <h3>今回の設定金額: {{ selectedPrice | numberFormat }}円</h3>
+          <v-select
+            v-model="selectedPrice"
+            :items="priceOptions"
+            label="設定金額"
+            >
+            <!-- class="white--text pink darken-2"
+            background-color="white--text pink darken-2" -->
+          </v-select>
+          <h3>設定金額: {{ selectedPrice | numberFormat }}円</h3>
           <br>
 
           <!-- 料理のジャンル選択 -->
-          <v-select v-model="selectedGenre" :items="genres" label="ジャンル選択"></v-select>
-          <!-- 選択したジャンルの料理一覧を動的に表示 -->
-          <div v-for="(cuisine, index) in cuisine0fSelectedGenre" :key="cuisine.genre-index">
-            <v-checkbox
-              :label="cuisine.name"
-              :value="cuisine"
-              v-model="listOfOrderedCuisines"
+          <v-select
+            v-model="selectedGenre"
+            :items="genres"
+            label="ジャンル選択"
             >
-            </v-checkbox>
-            <v-img :src="cuisine.image"></v-img>
-          </div>
+          </v-select>
+
+          <v-card
+            class="mx-auto"
+          >
+            <v-card-title>
+              {{ selectedGenre }}
+            </v-card-title>
+            <v-card-text class="pt-4">
+              メニュー
+            </v-card-text>
+            <v-divider></v-divider>
+            <!-- 選択したジャンルの料理一覧を動的に表示 -->
+            <v-container
+              id="scroll-target"
+              style="max-height: 400px"
+              class="overflow-y-auto"
+            >
+              <v-row
+                v-scroll:#scroll-target="onScroll"
+                align="top"
+                justify="center"
+              >
+                <v-list width="100%" style="text-align: center">
+                  <div v-for="(cuisine, index) in cuisine0fSelectedGenre" :key="cuisine.genre-index">
+                    <v-col cols=12 sm=6>
+                      <v-list-item-content>
+                        <v-checkbox
+                              :label="cuisine.name"
+                              :value="cuisine"
+                              v-model="listOfOrderedCuisines"
+                        ></v-checkbox>
+                        <v-img :src="cuisine.image"></v-img>
+                      </v-list-item-content>
+                    </v-col>
+                  </div>
+                </v-list>
+              </v-row>
+            </v-container>
+          </v-card>
+          <br>
 
           <!-- 選択した料理 -->
           <h4>注文する料理</h4>
-          <ul v-for="(cuisine, index) in listOfOrderedCuisines" :key="cuisine.id">
-            <li>{{ index + 1 }}皿目: {{ cuisine.name }}</li>
-          </ul>
+          <!-- <div justify="center"> -->
+          <v-list>
+            <v-list-item
+              v-for="(cuisine, index) in listOfOrderedCuisines"
+              :key="cuisine.id"
+              class="text-left"
+              >
+            <v-list-item-content>
+              {{ index + 1 }}皿目:<v-list-item-title v-text="cuisine.name"></v-list-item-title>
+              <v-text-field label="Price"></v-text-field>
+            </v-list-item-content>
+            </v-list-item>
+          </v-list>
+
+          <!-- <v-row align="center">
+            <ul v-for="(cuisine, index) in listOfOrderedCuisines" :key="cuisine.id" class="text-left">
+              <li>{{ index + 1 }}皿目: {{ cuisine.name }} <v-text-field label="Price"></v-text-field></li><br>
+            </ul>
+          </v-row> -->
+          <!-- </div> -->
 
           <!-- 注文結果 -->
           <div class="my-2">
-            <v-btn @click="active" color="warning" dark>STOP</v-btn>
+            <v-btn @click="active">ストップ</v-btn>
           </div>
           <div v-if="isActive">
             <h4>
@@ -38,6 +98,7 @@
               ( {{ totalMoneyDeference | numberFormat }}円 )
             </h4>
           </div>
+
         </v-col>
       </v-row>
     </v-container>
@@ -57,7 +118,7 @@ export default {
   data: ()=> {
     return {
       isActive: false,
-      priceOptions: [5000, 10000, 25000],
+      priceOptions: [10000, 25000, 35000],
       selectedPrice: "",
       genres: ['French', 'Japanese', 'Italian'],
       genre: "",
@@ -80,18 +141,6 @@ export default {
       return this.cuisines.filter(cuisine => {
         return cuisine.genre == this.selectedGenre
       })
-      // 現状では、propsで受け取った複数のcollectionの中の、1つのcollectionを格納してる
-      // let cuisine0fSelectedGenre = [];
-      // if (this.genre === 'French') {
-      //   // for (let i = 0; i < this.french_collection.length; i++) {
-      //     // let cuisine = this.french_collection[i];
-      //     // cuisine0fSelectedGenre.push(cuisine);
-      //     // cuisine0fSelectedGenre.push(this.french_collection[i]);
-      //   cuisine0fSelectedGenre = this.french_collection;
-      // } else if (this.genre === 'Japanese') {
-      //   cuisine0fSelectedGenre = this.japanese_collection;
-      // }
-      // return cuisine0fSelectedGenre;
     },
     totalAmountMoneyOfOrder: function() {
       // 金額を足し算してる

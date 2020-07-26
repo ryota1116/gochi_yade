@@ -62,12 +62,20 @@ export default {
 </script>
 
 <style>
+@import url("https://fonts.googleapis.com/css2?family=Great+Vibes&family=Source+Serif+Pro:ital@1&display=swap");
+/* html {
+  background: linear-gradient(white, #757575);
+} */
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  /* background: linear-gradient(white, #757575); */
+  /* background-image: url("~@/assets/back.jpg"); */
+  /* background-size: cover; */
+  font-family: 'Great Vibes', cursive;
+  font-family: 'Source Serif Pro', serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #FAFAFA;
   margin-top: 60px;
 }
 </style>
