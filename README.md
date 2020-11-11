@@ -1,3 +1,5 @@
+# ゴチ的な遊ぶをできるアプリをVueで作る
+
 # chased
 
 ## Project setup
